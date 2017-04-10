@@ -1,0 +1,29 @@
+{
+  "name": "finance",
+  "version": "1.0.0",
+  "description": "Yet to Start",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MyManMitras/finance.git"
+  },
+  "author": "MyManMitras@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MyManMitras/finance/issues"
+  },
+  "homepage": "https://github.com/MyManMitras/finance#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-artifactory-artifact": "^1.0.0",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-curl": "^2.2.0",
+    "grunt-exec": "^0.4.7",
+    "grunt-mkdir": "^1.0.0",
+    "grunt-subgrunt": "^1.2.0",
+    "grunt-zip": "^0.17.1"
+  }
+}
