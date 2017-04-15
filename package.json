@@ -25,5 +25,9 @@
     "grunt-mkdir": "^1.0.0",
     "grunt-subgrunt": "^1.2.0",
     "grunt-zip": "^0.17.1"
+  },
+  "dependencies": {
+    "react": "^15.5.3",
+    "react-dom": "^15.5.3"
   }
 }
