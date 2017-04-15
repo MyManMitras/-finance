@@ -1,4 +1,3 @@
 logs
 node_modules
-!openresty/conf/app/nginx.conf
-openresty/
+/openresty/
