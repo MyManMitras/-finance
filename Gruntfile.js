@@ -70,6 +70,41 @@ module.exports = function (grunt) {
                 stderr: false,
                 exitCode: [0, 1]
             }
+        },
+
+        babel: {
+            options: {
+                sourceMap: true,
+                presets : ["es2015", "stage-0", "react"]
+            },
+            dist: {
+                files: {
+                    "web/dist/pack.js": "web/scripts/app.js"
+                }
+            }
+        },
+
+         browserify: {
+            development: {
+                src: [
+                    "web/scripts/app.js"
+                ],
+                dest: 'web/dist/pack.js',
+                options: {
+                    browserifyOptions: { debug: true },
+                    transform: [["babelify", { "presets": ["node6","es2015", "stage-0", "react"] }],
+                    ["scssify",{"sass": {"outputStyle": "compressed", "importerFactory": "web/scripts/app.js"}}]],
+                    plugin: [["minifyify", { map: true }]],
+                    watch: true,
+                    keepAlive: true 
+                }
+            }
+        },
+        watch: {
+            scripts: {
+                files: ["./modules/*.js"],
+                tasks: ["browserify"]
+            }
         }
     });
 
@@ -80,6 +115,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-subgrunt');
+    grunt.loadNpmTasks('grunt-babel');
+    grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks("grunt-contrib-watch");
 
     grunt.registerTask('nginxconf:update', ['clean:nginxconfig']);
     grunt.registerTask('setup:openresty', ['mkdir:logs', 'curl:openresty', 'unzip:openresty', 'clean:openresty']);
@@ -91,4 +129,7 @@ module.exports = function (grunt) {
     grunt.registerTask('nginx:start', ['exec:start_nginx']);
     grunt.registerTask('nginx:stop', ['exec:stop_nginx']);
     grunt.registerTask('nginx:reload', ['exec:reload_nginx']);
+    grunt.registerTask('runBable', ["babel"]);
+    grunt.registerTask("build", ["browserify"]);
+
 };
