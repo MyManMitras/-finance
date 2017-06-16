@@ -1,0 +1,118 @@
+personRoles:
+- 
+ name: Manager
+ description: manager
+- 
+ name: Admin
+ description: admin
+- 
+ name: SuperUser
+ description: Web Admin
+- 
+ name: Collector
+ description: collector
+- 
+ name: Borrower
+ description: borrower
+- 
+ name: Depositor
+ description: depositor
+- 
+ name: Gauranteer
+ description: gauranteer
+ 
+firmServices:
+-
+ name: Asset Loan
+ description: Asset Loan
+-
+ name: Non Asset Loan
+ description: Non Asset Loan
+ 
+firmTypes:
+-
+ name: Individual
+ description: Individual
+-
+ name: Partnership
+ description: Partnership
+-
+ name: Society
+ description: Society
+ 
+collectionFrequencies:
+-
+ name: Daily
+ description: daily
+ faractionOfAYear: 365
+-
+ name: Yearly
+ description: Yearly
+ faractionOfAYear: 1
+-
+ name: Monthly
+ description: Monthly
+ faractionOfAYear: 12
+-
+ name: Weekly
+ description: Weekly
+ faractionOfAYear: 52
+-
+ name: Quarterly
+ description: Quarterly
+ faractionOfAYear: 4
+-
+ name: BiYearly
+ description: BiYearly
+ faractionOfAYear: 2
+ 
+loanStatus:
+-
+ name: Active
+ description: active
+-
+ name: Discontinued
+ description: Discontinued
+-
+ name: Closed
+ description: Closed
+ 
+paymentModes:
+-
+ name: NEFT
+ description: neft
+-
+ name: Check
+ description: check
+-
+ name: Cash
+ description: cash
+-
+ name: DD
+ description: dd
+ 
+comoundingFrequencies:
+-
+ name: Daily
+ description: daily
+ frequencyFactor: 365
+-
+ name: Yearly
+ description: Yearly
+ frequencyFactor: 1
+-
+ name: Monthly
+ description: Monthly
+ frequencyFactor: 12
+-
+ name: Weekly
+ description: Weekly
+ frequencyFactor: 52
+-
+ name: Quarterly
+ description: Quarterly
+ frequencyFactor: 4
+-
+ name: BiYearly
+ description: BiYearly
+ frequencyFactor: 2 

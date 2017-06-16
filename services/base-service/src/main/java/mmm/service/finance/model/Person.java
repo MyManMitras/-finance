@@ -42,24 +42,34 @@ public class Person {
 	@Column(name = "DOB")
 	private Timestamp dob;
 	
+	@Column(name = "GENDER")
+	private String gender;
+	
 	@Column(name = "EMAIL_ID")
 	private String emailId;
 	
 	@Column(name = "PHONE_NO")
 	private Long phoneNo;
 	
+	@Column(name = "LAST_LOGIN")
+	private Timestamp lastLogin;
+	
 	@Column(name = "PHOTO")
 	private File photo;
 	
-	@Column(name = "INDENTITY_PROOF")
+	@Column(name = "IDENTITY_PROOF")
 	private File identityProof;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JoinColumn(name = "FIRM_ID", insertable = true, updatable = true)
+	private Firm firm;	
+	
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "ROLE_ID", insertable = true, updatable = true)
 	private Role role;	
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
-	@JoinColumn(name = "ID", insertable = true, updatable = true)
+	@JoinColumn(name = "ADDRESS_ID", insertable = true, updatable = true)
 	private Address address;
 
 	public Long getId() {
@@ -157,6 +167,29 @@ public class Person {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
+
+	public Timestamp getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Timestamp lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public Firm getFirm() {
+		return firm;
+	}
+
+	public void setFirm(Firm firm) {
+		this.firm = firm;
+	}
 	
 }

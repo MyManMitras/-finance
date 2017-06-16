@@ -1,5 +1,7 @@
 package mmm.service.finance.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,12 +11,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="ROLE")
-public class Role {
+@Table(name="FIRM_TYPE")
+public class FirmType {
 	
 	@Id
-	@SequenceGenerator(name = "ROlE_ID", sequenceName = "ROlE_ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROlE_ID")
+	@SequenceGenerator(name = "FIRM_TYPE_ID", sequenceName = "FIRM_TYPE_ID",initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FIRM_TYPE_ID")
 	private Long id;
 	
 	@Column(nullable=false, name="NAME")
@@ -49,7 +51,7 @@ public class Role {
 	
 	@Override
 	public boolean equals(Object obj) {
-		Role objRole = (Role)obj;
+		FirmType objRole = (FirmType)obj;
 		if(this.name.equals(objRole.getName()))
 			return true;
 		return false;

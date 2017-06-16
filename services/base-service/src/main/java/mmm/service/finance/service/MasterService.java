@@ -7,11 +7,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import mmm.service.finance.model.OrganisationType;
-import mmm.service.finance.model.Ownership;
+import mmm.service.finance.model.FirmType;
+import mmm.service.finance.model.Service;
 import mmm.service.finance.model.Role;
-import mmm.service.finance.repository.OrganisationTypeRepository;
-import mmm.service.finance.repository.OwnershipRepository;
+import mmm.service.finance.repository.ServiceRepository;
+import mmm.service.finance.repository.FirmTypeRepository;
 import mmm.service.finance.repository.RoleRepository;
 
 @Component
@@ -21,10 +21,10 @@ public class MasterService {
 	private RoleRepository roleRepository;
 	
 	@Autowired
-	private OwnershipRepository ownershipRepository;
+	private FirmTypeRepository firmTypeRepository;
 	
 	@Autowired
-	private OrganisationTypeRepository organisationTypeRepository;
+	private ServiceRepository serviceRepository;
 
 	public List<Role> getRoles() {
 		List<Role> roles = new ArrayList<>();
@@ -53,57 +53,57 @@ public class MasterService {
 		return getRoles();
 	}
 	
-	public List<Ownership> getOwnerships() {
-		List<Ownership> ownerships = new ArrayList<>();
-		Iterable<Ownership> iterable = (Iterable<Ownership>) ownershipRepository.findAll();
-		Iterator<Ownership> iterator = iterable.iterator();
+	public List<FirmType> getOwnerships() {
+		List<FirmType> ownerships = new ArrayList<>();
+		Iterable<FirmType> iterable = (Iterable<FirmType>) firmTypeRepository.findAll();
+		Iterator<FirmType> iterator = iterable.iterator();
 		while(iterator.hasNext())
 			ownerships.add(iterator.next());
 		return ownerships;
 	}
 	
-	public Ownership getOwnershipByName(String name){
-		return ownershipRepository.findByName(name);
+	public FirmType getOwnershipByName(String name){
+		return firmTypeRepository.findByName(name);
 	}
 
-	public List<Ownership> setOwnership(Ownership ownership) {
-		ownershipRepository.save(ownership);
+	public List<FirmType> setOwnership(FirmType ownership) {
+		firmTypeRepository.save(ownership);
 		
 		return getOwnerships();
 	}
 	
-	public List<Ownership> deleteOwnership(Ownership ownership) {
-		Ownership ownershipToDelete = getOwnershipByName(ownership.getName());
+	public List<FirmType> deleteOwnership(FirmType ownership) {
+		FirmType ownershipToDelete = getOwnershipByName(ownership.getName());
 		
-		ownershipRepository.delete(ownershipToDelete);
+		firmTypeRepository.delete(ownershipToDelete);
 		
 		return getOwnerships();
 	}
 	
 	
-	public List<OrganisationType> getOrganisationTypes() {
-		List<OrganisationType> organisationTypes = new ArrayList<>();
-		Iterable<OrganisationType> iterable = (Iterable<OrganisationType>) organisationTypeRepository.findAll();
-		Iterator<OrganisationType> iterator = iterable.iterator();
+	public List<Service> getOrganisationTypes() {
+		List<Service> organisationTypes = new ArrayList<>();
+		Iterable<Service> iterable = (Iterable<Service>) serviceRepository.findAll();
+		Iterator<Service> iterator = iterable.iterator();
 		while(iterator.hasNext())
 			organisationTypes.add(iterator.next());
 		return organisationTypes;
 	}
 	
-	public OrganisationType getOrganisationTypeByName(String name){
-		return organisationTypeRepository.findByName(name);
+	public Service getOrganisationTypeByName(String name){
+		return serviceRepository.findByName(name);
 	}
 
-	public List<OrganisationType> setOrganisationType(OrganisationType organisationType) {
-		organisationTypeRepository.save(organisationType);
+	public List<Service> setOrganisationType(Service organisationType) {
+		serviceRepository.save(organisationType);
 		
 		return getOrganisationTypes();
 	}
 	
-	public List<OrganisationType> deleteOrganisationType(OrganisationType organisationType) {
-		OrganisationType organisationTypeToDelete = getOrganisationTypeByName(organisationType.getName());
+	public List<Service> deleteOrganisationType(Service organisationType) {
+		Service organisationTypeToDelete = getOrganisationTypeByName(organisationType.getName());
 		
-		organisationTypeRepository.delete(organisationTypeToDelete);
+		serviceRepository.delete(organisationTypeToDelete);
 		
 		return getOrganisationTypes();
 	}

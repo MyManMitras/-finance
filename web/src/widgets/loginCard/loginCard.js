@@ -23,9 +23,7 @@ class LoginCard extends React.Component {
     fetch('/finance/v1/login',{method: 'POST',dataType: 'json', body: JSON.stringify( payload ), accept: 'application/json',headers:{'content-type': 'application/json'}})
     .then(response=>{
       response.json().then(data=>{
-        if(data.name ==='Prashanth1')
-          this.setState({allowUser: true});
-        console.log(data);
+        this.props.login(data);
       });
     }, error=>{
       console.log('error: ' + error);

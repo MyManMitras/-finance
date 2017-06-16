@@ -2,6 +2,8 @@ package mmm.service.finance.controller;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +12,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import mmm.service.finance.model.OrganisationType;
-import mmm.service.finance.model.Ownership;
+import mmm.service.finance.model.CollectionFrequency;
+import mmm.service.finance.model.CompoundingFrequency;
+import mmm.service.finance.model.FirmType;
+import mmm.service.finance.model.PaymentMode;
+import mmm.service.finance.model.Service;
+import mmm.service.finance.model.Status;
 import mmm.service.finance.model.Role;
+import mmm.service.finance.properties.CommonConfiguration;
+import mmm.service.finance.repository.CollectionFrequencyRepository;
+import mmm.service.finance.repository.CompoundingFrequencyRepository;
+import mmm.service.finance.repository.FirmTypeRepository;
+import mmm.service.finance.repository.PaymentModeRepository;
+import mmm.service.finance.repository.RoleRepository;
+import mmm.service.finance.repository.ServiceRepository;
+import mmm.service.finance.repository.StatusRepository;
 import mmm.service.finance.service.MasterService;
 
 @Controller
@@ -21,6 +35,30 @@ public class MasterContoller {
 	
 	@Autowired
 	private MasterService masterService;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private FirmTypeRepository firmTypeRepository;
+	
+	@Autowired
+	private ServiceRepository serviceRepository;
+	
+	@Autowired
+	private StatusRepository statusRepository;
+	
+	@Autowired
+	private PaymentModeRepository paymentModeRepository;
+	
+	@Autowired
+	private CollectionFrequencyRepository collectionFrequencyRepository;
+	
+	@Autowired
+	private CompoundingFrequencyRepository compoundingFrequencyRepository;
+	
+	@Autowired
+	private CommonConfiguration commonConfiguration;
 	
 	@RequestMapping(value="/role", method=RequestMethod.GET)
 	public ResponseEntity<List<Role>> getRoles(){
@@ -40,40 +78,132 @@ public class MasterContoller {
 		return new ResponseEntity<List<Role>>(roles, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/ownership", method=RequestMethod.GET)
-	public ResponseEntity<List<Ownership>> getOwnerships(){
-		List<Ownership> ownerships = masterService.getOwnerships();
-		return new ResponseEntity<List<Ownership>>(ownerships, HttpStatus.OK);
+	@RequestMapping(value="/firmtype", method=RequestMethod.GET)
+	public ResponseEntity<List<FirmType>> getOwnerships(){
+		List<FirmType> ownerships = masterService.getOwnerships();
+		return new ResponseEntity<List<FirmType>>(ownerships, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/ownership", method=RequestMethod.POST)
-	public ResponseEntity<List<Ownership>> setOwnership(@RequestBody Ownership ownership){
-		List<Ownership> ownerships = masterService.setOwnership(ownership);
-		return new ResponseEntity<List<Ownership>>(ownerships, HttpStatus.OK);
+	@RequestMapping(value="/firmtype", method=RequestMethod.POST)
+	public ResponseEntity<List<FirmType>> setOwnership(@RequestBody FirmType ownership){
+		List<FirmType> ownerships = masterService.setOwnership(ownership);
+		return new ResponseEntity<List<FirmType>>(ownerships, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/ownership", method=RequestMethod.DELETE)
-	public ResponseEntity<List<Ownership>> deleteOwnership(@RequestBody Ownership ownership){
-		List<Ownership> ownerships = masterService.deleteOwnership(ownership);
-		return new ResponseEntity<List<Ownership>>(ownerships, HttpStatus.OK);
+	@RequestMapping(value="/firmtype", method=RequestMethod.DELETE)
+	public ResponseEntity<List<FirmType>> deleteOwnership(@RequestBody FirmType ownership){
+		List<FirmType> ownerships = masterService.deleteOwnership(ownership);
+		return new ResponseEntity<List<FirmType>>(ownerships, HttpStatus.OK);
+	}		
+	
+	@RequestMapping(value="/service", method=RequestMethod.GET)
+	public ResponseEntity<List<Service>> getOrganisationTypes(){
+		List<Service> organisationTypes = masterService.getOrganisationTypes();
+		return new ResponseEntity<List<Service>>(organisationTypes, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/organisationType", method=RequestMethod.GET)
-	public ResponseEntity<List<OrganisationType>> getOrganisationTypes(){
-		List<OrganisationType> organisationTypes = masterService.getOrganisationTypes();
-		return new ResponseEntity<List<OrganisationType>>(organisationTypes, HttpStatus.OK);
+	@RequestMapping(value="/service", method=RequestMethod.POST)
+	public ResponseEntity<List<Service>> setOrganisationType(@RequestBody Service organisationType){
+		List<Service> organisationTypes = masterService.setOrganisationType(organisationType);
+		return new ResponseEntity<List<Service>>(organisationTypes, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/organisationType", method=RequestMethod.POST)
-	public ResponseEntity<List<OrganisationType>> setOrganisationType(@RequestBody OrganisationType organisationType){
-		List<OrganisationType> organisationTypes = masterService.setOrganisationType(organisationType);
-		return new ResponseEntity<List<OrganisationType>>(organisationTypes, HttpStatus.OK);
+	@RequestMapping(value="/service", method=RequestMethod.DELETE)
+	public ResponseEntity<List<Service>> deleteOrganisationType(@RequestBody Service organisationType){
+		List<Service> organisationTypes = masterService.deleteOrganisationType(organisationType);
+		return new ResponseEntity<List<Service>>(organisationTypes, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/organisationType", method=RequestMethod.DELETE)
-	public ResponseEntity<List<OrganisationType>> deleteOrganisationType(@RequestBody OrganisationType organisationType){
-		List<OrganisationType> organisationTypes = masterService.deleteOrganisationType(organisationType);
-		return new ResponseEntity<List<OrganisationType>>(organisationTypes, HttpStatus.OK);
+	@PostConstruct
+	public void initMasterTables() {
+		updatePersonRoles();
+		updateFirmServices();
+		updateFirmTypes();
+		updateCollectionFrequencyTypes();
+		updateLoanStatus();
+		updatePaymentModes();
+		updateCompoundingFrequencyTypes();
+	}
+	
+	private void updateCompoundingFrequencyTypes() {
+		List<CompoundingFrequency> compoundingFrequencysInDatabase = (List<CompoundingFrequency>) compoundingFrequencyRepository.findAll();
+		List<CompoundingFrequency> compoundingFrequencysFromProps = commonConfiguration.getComoundingFrequencies();
+		for(int index = 0; index < compoundingFrequencysFromProps.size(); index++) {
+			CompoundingFrequency compoundingFrequency = compoundingFrequencysFromProps.get(index);
+			if(!compoundingFrequencysInDatabase.contains(compoundingFrequency)) {
+				compoundingFrequencyRepository.save(compoundingFrequency);
+			}
+		}
+	}
+
+	private void updatePaymentModes() {
+		List<PaymentMode> paymentModesInDatabase = (List<PaymentMode>) paymentModeRepository.findAll();
+		List<PaymentMode> paymentModesFromProps = commonConfiguration.getPaymentModes();
+		for(int index = 0; index < paymentModesFromProps.size(); index++) {
+			PaymentMode paymentMode = paymentModesFromProps.get(index);
+			if(!paymentModesInDatabase.contains(paymentMode)) {
+				paymentModeRepository.save(paymentMode);
+			}
+		}
+		
+	}
+
+	private void updateLoanStatus() {
+		List<Status> statusInDatabase = (List<Status>) statusRepository.findAll();
+		List<Status> statusFromProps = commonConfiguration.getLoanStatus();
+		for(int index = 0; index < statusFromProps.size(); index++) {
+			Status status = statusFromProps.get(index);
+			if(!statusInDatabase.contains(status)) {
+				statusRepository.save(status);
+			}
+		}
+	}
+
+	private void updateCollectionFrequencyTypes() {
+		List<CollectionFrequency> collectionFrequenciesInDatabase = (List<CollectionFrequency>) collectionFrequencyRepository.findAll();
+		List<CollectionFrequency> collectionFrequenciesFromProps = commonConfiguration.getCollectionFrequencies();
+		for(int index = 0; index < collectionFrequenciesFromProps.size(); index++) {
+			CollectionFrequency collectionFrequency = collectionFrequenciesFromProps.get(index);
+			if(!collectionFrequenciesInDatabase.contains(collectionFrequency)) {
+				collectionFrequencyRepository.save(collectionFrequency);
+			}
+		}
+		
+	}
+
+	private void updateFirmTypes() {
+		List<FirmType> firmTypesInDatabase = (List<FirmType>) firmTypeRepository.findAll();
+		List<FirmType> firmTypesFromProps = commonConfiguration.getFirmTypes();
+		for(int index = 0; index < firmTypesFromProps.size(); index++) {
+			FirmType firmType = firmTypesFromProps.get(index);
+			if(!firmTypesInDatabase.contains(firmType)) {
+				firmTypeRepository.save(firmType);
+			}
+		}
+		
+	}
+
+	private void updateFirmServices() {
+		List<Service> servicesInDatabase = (List<Service>) serviceRepository.findAll();
+		List<Service> servicesFromProps = commonConfiguration.getFirmServices();
+		for(int index = 0; index < servicesFromProps.size(); index++) {
+			Service service = servicesFromProps.get(index);
+			if(!servicesInDatabase.contains(service)) {
+				serviceRepository.save(service);
+			}
+		}
+		
+	}
+
+	public void updatePersonRoles() {
+		List<Role> rolesInDatabase = (List<Role>) roleRepository.findAll();
+		List<Role> rolesFromProps = commonConfiguration.getPersonRoles();
+		for(int index = 0; index < rolesFromProps.size(); index++) {
+			Role role = rolesFromProps.get(index);
+			if(!rolesInDatabase.contains(role)) {
+				roleRepository.save(role);
+			}
+		}
 	}
 
 }

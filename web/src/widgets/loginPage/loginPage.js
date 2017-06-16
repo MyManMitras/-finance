@@ -16,7 +16,7 @@ class LoginPage extends React.Component {
             </Card>
           </div>
           <div className="col-lg-3 col-sm-12 col-md-12">
-            <LoginCard/>
+            <LoginCard login={this.props.login}/>
           </div>
         </div>
         <div className="row">

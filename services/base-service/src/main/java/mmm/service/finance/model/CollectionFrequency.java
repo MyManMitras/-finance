@@ -1,5 +1,7 @@
 package mmm.service.finance.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,19 +11,22 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="ROLE")
-public class Role {
+@Table(name="COLLECTION_FREQUENCY")
+public class CollectionFrequency {
 	
 	@Id
-	@SequenceGenerator(name = "ROlE_ID", sequenceName = "ROlE_ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROlE_ID")
+	@SequenceGenerator(name = "COLLECTION_FREQUENCY_ID", sequenceName = "COLLECTION_FREQUENCY_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COLLECTION_FREQUENCY_ID")
 	private Long id;
 	
-	@Column(nullable=false, name="NAME")
+	@Column(name = "NAME")
 	private String name;
 	
-	@Column(name="DESCRIPTION")
+	@Column(name = "DESCRIPTION")
 	private String description;
+	
+	@Column(name = "FRACTION_OF_A_YEAR")
+	private int faractionOfAYear;
 
 	public Long getId() {
 		return id;
@@ -46,13 +51,21 @@ public class Role {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public int getFaractionOfAYear() {
+		return faractionOfAYear;
+	}
+
+	public void setFaractionOfAYear(int faractionOfAYear) {
+		this.faractionOfAYear = faractionOfAYear;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		Role objRole = (Role)obj;
-		if(this.name.equals(objRole.getName()))
+		CollectionFrequency objCollectionFrequency = (CollectionFrequency)obj;
+		if(this.name.equals(objCollectionFrequency.getName()))
 			return true;
 		return false;
 	}
-	
+
 }

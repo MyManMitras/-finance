@@ -1,11 +1,12 @@
 import React from 'react';
 import LoginPage from './widgets/loginPage/loginPage';
+import HomePage from './widgets/homePage/homePage';
 import "./App.css";
 
 class App extends React.Component {
 
-  state = { allowUser: ''};
-
+  state = { allowUser: '', user: {}};
+/*
   componentWillMount() {
     fetch('/finance/v1/user/sample',{accept: 'application/json'}).then(response=>{
       response.json().then(data=>{
@@ -16,12 +17,18 @@ class App extends React.Component {
     }, error=>{
       console.log('error: ' + error);
     });
-      
+  }; */
+
+  login(user) {
+    this.setState({allowUser: true,
+      user: user
+    });
   };
+
   render () {
-    var page = <LoginPage/>;
+    var page = <LoginPage login={this.login.bind(this)}/>;
     if(this.state.allowUser === true){
-        page = <LoginPage/>;
+        page = <HomePage user={this.state.user}/>;
     }
     return (page);
   }

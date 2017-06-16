@@ -9,12 +9,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="ROLE")
-public class Role {
+@Table(name="SERVICE")
+public class Service {
 	
 	@Id
-	@SequenceGenerator(name = "ROlE_ID", sequenceName = "ROlE_ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROlE_ID")
+	@SequenceGenerator(name = "SERVICE_ID", sequenceName = "SERVICE_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SERVICE_ID")
 	private Long id;
 	
 	@Column(nullable=false, name="NAME")
@@ -49,10 +49,9 @@ public class Role {
 	
 	@Override
 	public boolean equals(Object obj) {
-		Role objRole = (Role)obj;
+		Service objRole = (Service)obj;
 		if(this.name.equals(objRole.getName()))
 			return true;
 		return false;
 	}
-	
 }

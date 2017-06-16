@@ -1,19 +1,25 @@
 import React from 'react';
 
 const footerStyle = {
-    textAlign: 'center',
     width: '100%',
-    borderTop: '2px solid'
-
+    borderTop: '2px solid',
+    position: 'fixed',
+    bottom: 0,
+    color: 'white',
+    background: 'rgb(63, 81, 181)',
+    padding: '1em 1em 0'
 };
 
 class Footer extends React.Component {
     render () {
         return (
             <footer style={footerStyle}>
-                <span>For questions/queries/assitance/support get in touch with us. We are happy to help...</span><br/>
-                <span>Email: MyManMitras@gmail.com / Call: NNNNNNNNNN</span><br/>
-                <span>Address: Address ..................</span>
+                <span>
+                    <p style={{margin: '0'}}>
+                        For questions/queries/assitance/support get in touch with us. We are happy to help...<br/>
+                        Email: MyManMitras@gmail.com | Phone: NNNNNNNNNN | Address: ............
+                    </p>
+                </span>
             </footer>
         );
     };
