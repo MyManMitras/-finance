@@ -35,7 +35,7 @@ class LoginCard extends React.Component {
         <Card>
             <CardTitle title="Login Here"/>
             <section style={{padding: '14px 16px 10px'}}>
-              <Input type='text' label='Organization Id' name='orgId' maxLength={9} value={this.state.org} onChange={this.handleChange.bind(this, 'org')}/>
+              <Input type='text' label='Firm Id' name='orgId' maxLength={9} value={this.state.org} onChange={this.handleChange.bind(this, 'org')}/>
               <Input type='text' label='Login Id' name='loginId' maxLength={9} value={this.state.login} onChange={this.handleChange.bind(this, 'login')}/>
               <Input type='password' label='Password' name='loginId' maxLength={6} value={this.state.password} onChange={this.handleChange.bind(this, 'password')}/>
               <Button label='Request Password Reset' flat primary style={{'fontSize': 'smaller'}}></Button>

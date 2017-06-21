@@ -7,7 +7,7 @@ import CardTitle from 'react-toolbox/lib/card/CardTitle';
 
 class LoginPage extends React.Component {
   render () {
-    return (<section>
+    return (<section className="login-page">
         <AppBar title='M - Cube' ></AppBar>
         <div className="row">
           <div className="col-lg-9 col-sm-12 col-md-12">

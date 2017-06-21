@@ -6,9 +6,9 @@ import FirmOverview from '../../components/firmOverview';
 class Dashboard extends React.Component {
   render () {
     return (
-        <div className="row">
+        <div className="row card-row">
             <div className="col-lg-8 col-sm-12 col-md-12">
-                <div className="row">
+                <div className="row card-row">
                     <div className="col-lg-6 col-sm-12 col-md-6">
                         <FirmOverview firmId={this.props.user.firm.firmId}/>
                     </div>
@@ -18,7 +18,7 @@ class Dashboard extends React.Component {
                         </Card>
                     </div>
                 </div>
-                <div className="row">
+                <div className="row card-row">
                     <div className="col-lg-12 col-sm-12 col-md-12">
                         <Card>
                             <CardTitle title="Over Due Alerts"/>
@@ -27,14 +27,14 @@ class Dashboard extends React.Component {
                 </div>
             </div>
             <div className="col-lg-4 col-sm-12 col-md-12">
-                <div className="row">
+                <div className="row card-row">
                     <div className="col-lg-12 col-sm-12 col-md-12">
                         <Card>
                             <CardTitle title="Bank Information"/>
                         </Card>
                     </div>
                 </div>                
-                <div className="row">
+                <div className="row card-row">
                     <div className="col-lg-12 col-sm-12 col-md-12">
                         <Card>
                             <CardTitle title="Staff Information"/>

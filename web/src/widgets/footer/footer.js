@@ -3,8 +3,6 @@ import React from 'react';
 const footerStyle = {
     width: '100%',
     borderTop: '2px solid',
-    position: 'fixed',
-    bottom: 0,
     color: 'white',
     background: 'rgb(63, 81, 181)',
     padding: '1em 1em 0'

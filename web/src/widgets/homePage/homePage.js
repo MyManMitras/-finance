@@ -15,20 +15,11 @@ import FontIcon from 'react-toolbox/lib/font_icon/FontIcon';
 
 class HomePage extends React.Component {
   render () {
-    return (<section>
+    return (
+    <section>
         <AppBar title={this.props.user.firm.name} >
           <Navigation type="horizontal">
-
-            <Button icon='person' label={this.props.user.firstName} flat style={{color: 'white'}}>
-              &nbsp;
-            </Button>
-                <IconMenu icon='more_vert' position='topLeft' menuRipple>
-                  <MenuItem value='download' icon='get_app' caption='Download' />
-                  <MenuItem value='help' icon='favorite' caption='Favorite' />
-                  <MenuItem value='settings' icon='open_in_browser' caption='Open in app' />
-                  <MenuDivider />
-                  <MenuItem value='signout' icon='delete' caption='Delete' disabled />
-                </IconMenu>
+            <Button icon='person' label={this.props.user.firstName} flat style={{color: 'white'}}/>
           </Navigation>
         </AppBar>
         <Content user = {this.props.user}/>

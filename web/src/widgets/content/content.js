@@ -3,6 +3,7 @@ import Tab from 'react-toolbox/lib/tabs/Tab';
 import Tabs from 'react-toolbox/lib/tabs/Tabs';
 import Button from 'react-toolbox/lib/button/Button';
 import Dashboard from '../dashboard/dashboard';
+import SuperAdminDashboard from '../dashboard/superAdminDashboard';
 
 class Content extends React.Component {
     state = {activeTabIndex: 0};
