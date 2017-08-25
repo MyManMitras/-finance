@@ -1,5 +1,6 @@
 package mmm.service.finance.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,7 +13,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="COLLECTION_FREQUENCY")
-public class CollectionFrequency {
+public class CollectionFrequency implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@SequenceGenerator(name = "COLLECTION_FREQUENCY_ID", sequenceName = "COLLECTION_FREQUENCY_ID")
@@ -27,6 +30,12 @@ public class CollectionFrequency {
 	
 	@Column(name = "FRACTION_OF_A_YEAR")
 	private int faractionOfAYear;
+	
+	@Column(name = "INCREMENTS")
+	private int increments;
+	
+	@Column(name = "FIELD")
+	private int field;
 
 	public Long getId() {
 		return id;
@@ -60,6 +69,22 @@ public class CollectionFrequency {
 		this.faractionOfAYear = faractionOfAYear;
 	}
 	
+	public int getIncrements() {
+		return increments;
+	}
+
+	public void setIncrements(int increments) {
+		this.increments = increments;
+	}
+
+	public int getField() {
+		return field;
+	}
+
+	public void setField(int field) {
+		this.field = field;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		CollectionFrequency objCollectionFrequency = (CollectionFrequency)obj;

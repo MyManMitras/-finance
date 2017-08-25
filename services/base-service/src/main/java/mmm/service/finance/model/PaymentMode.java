@@ -1,5 +1,7 @@
 package mmm.service.finance.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +12,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="PAYMENT_MODE")
-public class PaymentMode {
+public class PaymentMode implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@SequenceGenerator(name = "PAYMENT_MODE_ID", sequenceName = "PAYMENT_MODE_ID")

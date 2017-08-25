@@ -1,6 +1,7 @@
 package mmm.service.finance.model;
 
 import java.io.File;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -20,8 +21,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="FIRM")
-public class Firm {
-	
+public class Firm implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@SequenceGenerator(name = "FIRM_ID", sequenceName = "FIRM_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FIRM_ID")
@@ -42,7 +45,7 @@ public class Firm {
 	@Column(name = "PHONE2")
 	private Long phone2;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST }, optional = true)
+	@OneToOne(fetch = FetchType.LAZY,cascade = { CascadeType.PERSIST }, optional = true)
 	@JoinColumn(name = "ADMIN_ID", insertable = true, updatable = true)
 	private Person admin;
 	
@@ -55,19 +58,19 @@ public class Firm {
 	@Column(name = "VALID_TILL")
 	private Timestamp validTill;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "ADDRESS_ID", insertable = true, updatable = true)
 	private Address address;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "BANK_INFO_ID", insertable = true, updatable = true)
 	private BankInfo bankInfo;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@ManyToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "FIRM_TYPE_ID", insertable = true, updatable = true)
 	private FirmType firmType;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@ManyToMany(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "SERVICE_ID", insertable = true, updatable = true)
 	private List<Service> services;
 	

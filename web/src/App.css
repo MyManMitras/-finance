@@ -3,14 +3,14 @@
 }
 
 footer {
-  font-size: x-small !important;
+  font-size: small !important;
 } 
 
 .dashboard-input {
   padding: 0 !important;
 }
 
-.super-admin-dashboard-button {
+.super-admin-dashboard-button, .button-spacing {
   margin: 0 12px;
 }
 

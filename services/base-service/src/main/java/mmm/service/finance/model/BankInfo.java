@@ -1,5 +1,7 @@
 package mmm.service.finance.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,8 +12,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="BANK_INFO")
-public class BankInfo {
+public class BankInfo implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@SequenceGenerator(name = "BANK_INFO_ID", sequenceName = "BANK_INFO_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BANK_INFO_ID")

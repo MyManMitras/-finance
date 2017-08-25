@@ -1,0 +1,42 @@
+thead {
+    border-bottom-style: double;
+}
+
+th, td {
+    padding: 15px;
+}
+
+thead tr, tbody tr:nth-child(even) {
+    background: aliceblue;
+}
+thead tr th:first-child {
+    border-top-left-radius: 5px;
+}
+thead tr th:last-child {
+    border-top-right-radius: 5px;
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 5px;
+}
+
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 5px;
+}
+
+.hand-pointer {
+    cursor: pointer; 
+}
+
+table {
+    padding: 5px;
+}
+
+tbody tr:hover {
+    background: lavender;
+}
+
+tbody tr td:hover {
+    border: 1px solid;
+    border-radius: 5px;
+}

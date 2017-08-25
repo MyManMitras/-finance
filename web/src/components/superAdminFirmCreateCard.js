@@ -1,178 +1,182 @@
 import React from 'react';
-import Card from 'react-toolbox/lib/card/Card';
-import CardTitle from 'react-toolbox/lib/card/CardTitle';
-import CardText from 'react-toolbox/lib/card/CardText';
-import CardActions from 'react-toolbox/lib/card/CardActions';
 import Button from 'react-toolbox/lib/button/Button';
-import theme from '../style/card.css';
 import Input from 'react-toolbox/lib/input/Input';
+import Dropdown from 'react-toolbox/lib/dropdown/Dropdown';
 import DatePicker from 'react-toolbox/lib/date_picker/DatePicker';
 import AddressCreateCard from './addressCreateCard';
+import _ from 'lodash';
 
 class SuperAdminFirmCreateCard extends React.Component {
 
-  state = {overview: {},hint: '',firm: {address: {}}};
-  
-  componentWillReceiveProps(nextProps){
-      if(nextProps.mode !=='update') {
-        this.setState({firm: {
-            firmId: '',
-            firmName: '',
-            adminName: '',
-            email: '',
-            phone1: '',
-            phone2: '',
-            establishmentDate: null,
-            licenseNumber: '',
-            validTill: null,
-            firmType: '',
-            serviceType: '',
-            bankInfo: {
-                bankName: '',
-                branch: '',
-                ifsCode: '',
-                accountNumber: ''
-            },
-            address: {
+    state = {
+        overview: {}, hint: '', firmTypes: [], services: [], admins: [],
+        firmId: '', firmName: '', adminName: '', email: '', phone1: '', phone2: '', establishmentDate: null, licenseNumber: '',
+        validTill: null, firmType: '', serviceType: '', bankName: '', branch: '', ifsCode: '', accountNumber: ''
+    };
 
-            }
-        }
-    });
-    }else if(nextProps.mode ==='update')
-        this.setState({firm: {
-            firmId: 'svf3131',
-            firmName: 'Sri Venkateshwara Finance',
-            adminName: 'Shiv Kumar',
-            email: 'bnShivKumar@gmail.com',
-            phone1: '8880003339',
-            phone2: '08231243534',
-            establishmentDate: new Date(2015, 10, 16),
-            licenseNumber: 31232123,
-            validTill: new Date(2025, 10, 16),
-            firmType: 'Partnership',
-            serviceType: 'Both Asset and Non Asset Services',
-            bankInfo: {
-                bankName: 'Cindicate Bank Ltd',
-                branch: 'Malavalli',
-                ifsCode: 'CIN3123EE124',
-                accountNumber: 9912378402
-            },
-            address: {
+    constructor(props) {
+        super(props);
+        if (!_.isEmpty(props.firm))
+            this.state = this.getStateFromProps(props.firm);
+    };
 
-            }
-        }
-    }); 
-  };
-  componentWillMount() {
-      if(this.props.mode ==='update')
-        this.setState({firm: {
-            firmId: 'svf3131',
-            firmName: 'Sri Venkateshwara Finance',
-            adminName: 'Shiv Kumar',
-            email: 'bnShivKumar@gmail.com',
-            phone1: '8880003339',
-            phone2: '08231243534',
-            establishmentDate: new Date(2015, 10, 16),
-            licenseNumber: 31232123,
-            validTill: new Date(2025, 10, 16),
-            firmType: 'Partnership',
-            serviceType: 'Both Asset and Non Asset Services',
-            bankInfo: {
-                bankName: 'Cindicate Bank Ltd',
-                branch: 'Malavalli',
-                ifsCode: 'CIN3123EE124',
-                accountNumber: 9912378402
-            },
-            address: {
+    getStateFromProps = (firm) => {
+        return {
+            firmId: firm.firmId, firmName: firm.firmName, adminName: firm.adminName, email: firm.email, phone1: firm.phone1,
+            phone2: firm.phone2, establishmentDate: firm.establishmentDate, licenseNumber: firm.licenseNumber, validTill: firm.validTill,
+            firmType: firm.firmType, serviceType: firm.serviceType, bankName: firm.bankName, branch: firm.branch,
+            ifsCode: firm.ifsCode, accountNumber: firm.accountNumber
+        };
+    };
 
-            }
-        }
-    });
-        else
-            this.setState({firm: {
-                    address: {},
-                    bankInfo: {}
-                }
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.firm) this.setState(this.getStateFromProps(nextProps.firm));
+    };
+    mapValues = (value) => {
+        return {
+            value: value,
+            label: value
+        };
+    };
+
+    handleChange = (field, value) => {
+        this.setState({ ...this.state, [field]: value });
+    };
+
+    componentWillMount() {
+        fetch('/finance/v1/firm/creation/details', {
+            accept: 'application/json', credentials: "same-origin", headers: { 'Content-Type': 'application/json' }
+        })
+            .then(response => {
+                response.json()
+                    .then(data => {
+                        this.setState({
+                            firmTypes: data.ownerships.map(this.mapValues),
+                            services: data.orgTypes.map(this.mapValues),
+                            admins: data.admins.map(this.mapValues)
+                        });
+                    });
+            }, error => {
+                console.log('error: ' + error);
             });
-    fetch('/finance/v1/dashboard/firmOverview/'+this.props.firmId,{accept: 'application/json'}).then(response=>{
-      response.json().then(data=>{
-        this.setState({overview: data});
-      });
-    }, error=>{
-      console.log('error: ' + error);
-    });
-  };
-  render () {
-    return (
-        <section>
-            <header>
-                <h3>Firm {this.props.mode ==='update' ? 'Updation' : 'Creation'}</h3>
-            </header>
-            <section className="section-content">
-                <h5>Firm Details</h5>
-                <div className="row">
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='text' label='Firm Id' name='' value={this.state.hint} disabled={this.props.mode ==='update'}
-                            maxLength={9} hint='Choose a unique firm Id' required value={this.state.firm.firmId}/>
+    };
+
+    createFirm = () => {
+        var firmDetails = {
+            name: this.state.firmName, firmId: this.state.firmId, emailId: this.state.email, phone1: this.state.phone1,
+            phone2: this.state.phone2, admin: _.last(this.state.adminName.split(' - ')), establishmentDate: this.state.establishmentDate ? this.state.establishmentDate.getTime() : null, 
+            licenseNo: this.state.licenseNumber, validTill: this.state.validTill ? this.state.validTill.getTime() : null, firmType: this.state.firmType, 
+            services: [this.state.serviceType], bankInfo: {
+                bankName: this.state.bankName, branch: this.state.branch, ifscCode: this.state.ifsCode, accountNumber: this.state.accountNumber
+            }, address: {
+                line1: this.address.state.line1, line2: this.address.state.line2, city: this.address.state.city,
+                state: this.address.state.state, pincode: this.address.state.pincode, landMark: this.address.state.landmark
+            }
+        };
+
+        fetch('/finance/v1/firm', {
+            method: 'POST', dataType: 'json', body: JSON.stringify(firmDetails), credentials: "same-origin",
+            headers: {
+                'Content-Type': 'application/json',
+                'accept': 'application/json',
+            }
+        }).then(response => {
+            response.json().then(data => {
+                console.log('success');
+            });
+        }, error => {
+            console.log('error: ' + error);
+        });
+    };
+    render() {
+        return (
+            <section>
+                <header>
+                    <h3>Firm {this.props.mode === 'update' ? 'Updation' : 'Creation'}</h3>
+                </header>
+                <section className="section-content">
+                    <h5>Firm Details</h5>
+                    <div className="row">
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Input type='text' label='Firm Id' onChange={this.handleChange.bind(this, 'firmId')}
+                                maxLength={9} hint='Choose a unique firm Id' required value={this.state.firmId} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Input type='text' label='Name' maxLength={9} value={this.state.firmName}
+                                onChange={this.handleChange.bind(this, 'firmName')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Dropdown auto source={this.state.admins} label='Admin'
+                                value={this.state.adminName} onChange={this.handleChange.bind(this, 'adminName')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Input type='email' label='Email Id' value={this.state.email}
+                                onChange={this.handleChange.bind(this, 'email')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Input type='number' label='Phone Number 1' value={this.state.phone1}
+                                onChange={this.handleChange.bind(this, 'phone1')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Input type='number' label='Phone Number 2' value={this.state.phone2}
+                                onChange={this.handleChange.bind(this, 'phone2')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <DatePicker label='Establishment Date' value={this.state.establishmentDate}
+                                onChange={this.handleChange.bind(this, 'establishmentDate')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Input type='number' label='License Number' value={this.state.licenseNumber}
+                                onChange={this.handleChange.bind(this, 'licenseNumber')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <DatePicker label='Valid Till' value={this.state.validTill}
+                                onChange={this.handleChange.bind(this, 'validTill')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Dropdown auto source={this.state.firmTypes} label='Firm Type'
+                                value={this.state.firmType} onChange={this.handleChange.bind(this, 'firmType')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Dropdown auto source={this.state.services} label='Service Type'
+                                value={this.state.serviceType} onChange={this.handleChange.bind(this, 'serviceType')} />
+                        </div>
                     </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='text' label='Name' name='' maxLength={9} value={this.state.firm.firmName}/>
+                </section>
+                <AddressCreateCard ref={(address) => { this.address = address; }} />
+                <section className="section-content">
+                    <h5>Bank Details</h5>
+                    <div className="row">
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Input type='text' label='Bank Name' required value={this.state.bankName}
+                                onChange={this.handleChange.bind(this, 'bankName')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Input type='text' label='Branch' value={this.state.branch}
+                                onChange={this.handleChange.bind(this, 'branch')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Input type='text' label='IFSC Code' value={this.state.ifsCode}
+                                onChange={this.handleChange.bind(this, 'ifsCode')} />
+                        </div>
+                        <div className="col-lg-3 col-sm-12 col-md-6">
+                            <Input type='number' label='Account Number' value={this.state.accountNumber}
+                                onChange={this.handleChange.bind(this, 'accountNumber')} />
+                        </div>
                     </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='text' label='Admin Name' name='' maxLength={9} disabled={this.props.mode ==='update'}
-                        value={this.state.firm.adminName}/>
+                </section>
+                <section>
+                    <div className="row">
+                        <div className="col-lg-12 col-sm-12 col-md-12">
+                            <Button raised primary label="Submit" onClick={this.createFirm.bind(this)}
+                                style={{ margin: '10px', float: 'right' }} />
+                            <Button raised label="Cancel" style={{ margin: '10px', float: 'right' }} />
+                        </div>
                     </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='email' label='Email Id' name='' value={this.state.firm.email}/>
-                    </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='number' label='Phone Number 1' name='' value={this.state.firm.phone1}/>
-                    </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='number' label='Phone Number 2' name='' value={this.state.firm.phone2}/>
-                    </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <DatePicker label='Establishment Date' value={this.state.firm.establishmentDate}/>
-                    </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='number' label='License Number' name='' value={this.state.firm.licenseNumber}/>
-                    </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <DatePicker label='Valid Till' value={this.state.firm.validTill}/>
-                    </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='text' label='Firm Type' name='' value={this.state.firm.firmType}/>
-                    </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='text' label='Services Provided' name='' value={this.state.firm.serviceType}/>
-                    </div>
-                </div>
+                </section>
             </section>
-            <AddressCreateCard/>
-             <section className="section-content">
-                <h5>Bank Details</h5>
-                <div className="row">
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='text' label='Bank Name' name='' required value={this.state.firm.bankInfo.bankName}/>
-                    </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='text' label='Branch' name=''  value={this.state.firm.bankInfo.branch}/>
-                    </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='text' label='IFSC Code' name='' value={this.state.firm.bankInfo.ifsCode}/>
-                    </div>
-                    <div className="col-lg-3 col-sm-12 col-md-6">
-                        <Input type='text' label='Account Number' name='' value={this.state.firm.bankInfo.accountNumber}/>
-                    </div>
-                </div>
-            </section>
-            <footer>
-                <Button label='Submit' primary raised></Button>
-                <Button label='Cancel' primary ></Button>
-            </footer>
-        </section>
-    );
-  };
+        );
+    };
 }
 
 export default SuperAdminFirmCreateCard;

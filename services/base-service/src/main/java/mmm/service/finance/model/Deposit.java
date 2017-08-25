@@ -1,6 +1,7 @@
 package mmm.service.finance.model;
 
 import java.io.File;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -20,22 +21,24 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="DEPOSIT")
-public class Deposit {
+public class Deposit implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@SequenceGenerator(name = "DEPOSIT_ID", sequenceName = "DEPOSIT_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DEPOSIT_ID")
 	private Long id;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "CREATOR_ID", insertable = true, updatable = true)
 	private Person creator;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "DEPOSITER_ID", insertable = true, updatable = true)
 	private Person depositer;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "APPROVER_ID", insertable = true, updatable = true)
 	private Person approver;
 	
@@ -51,18 +54,18 @@ public class Deposit {
 	@Column(name = "RATE")
 	private float rate;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@ManyToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "COLLECTION_FREQUENCY_ID", insertable = true, updatable = true)
 	private CollectionFrequency collectionFrequency;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@ManyToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "COMPOUNDING_FREQUENCY_ID", insertable = true, updatable = true)
 	private CompoundingFrequency compoundingFrequency;
 	
 	@Column(name = "TENURE")
 	private int tenure;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@ManyToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "STATUS_ID", insertable = true, updatable = true)
 	private Status status;
 	

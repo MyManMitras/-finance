@@ -1,10 +1,12 @@
 package mmm.service.finance.controller;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import mmm.service.finance.email.EmailServiceImpl;
+import mmm.service.finance.exception.FinanceException;
 import mmm.service.finance.model.CollectionFrequency;
 import mmm.service.finance.model.CompoundingFrequency;
+import mmm.service.finance.model.Firm;
 import mmm.service.finance.model.FirmType;
 import mmm.service.finance.model.PaymentMode;
+import mmm.service.finance.model.Person;
 import mmm.service.finance.model.Service;
 import mmm.service.finance.model.Status;
 import mmm.service.finance.model.Role;
@@ -28,10 +34,13 @@ import mmm.service.finance.repository.RoleRepository;
 import mmm.service.finance.repository.ServiceRepository;
 import mmm.service.finance.repository.StatusRepository;
 import mmm.service.finance.service.MasterService;
+import mmm.service.finance.service.PersonService;
 
 @Controller
 @RequestMapping(value="/finance/v1/master")
 public class MasterContoller {
+	@Value(value="${superUser.email}")
+	private String superUserMailId;
 	
 	@Autowired
 	private MasterService masterService;
@@ -59,6 +68,14 @@ public class MasterContoller {
 	
 	@Autowired
 	private CommonConfiguration commonConfiguration;
+	
+	@Autowired
+	private EmailServiceImpl emailService;
+	
+	@Autowired
+	private PersonService personService;
+	
+	private static Role superAdminRole;
 	
 	@RequestMapping(value="/role", method=RequestMethod.GET)
 	public ResponseEntity<List<Role>> getRoles(){
@@ -123,8 +140,45 @@ public class MasterContoller {
 		updateLoanStatus();
 		updatePaymentModes();
 		updateCompoundingFrequencyTypes();
+		updateSuperUserLogin();
 	}
 	
+	private void updateSuperUserLogin() {
+		Person superUser = personService.getPersonByLoginId("SuperUser");
+		Integer randomPassword = (int) (Math.random() * 100000);
+		randomPassword = 112233;
+		if(superUser == null) {
+			superUser = new Person();
+			Firm firm = new Firm();
+			firm.setName("MyManMitras");
+			firm.setEmailId("MyManMitras@gmail.com");
+			firm.setFirmId("mmm");
+			firm.setEstablishmentDate(new Timestamp(System.currentTimeMillis()));
+			firm.setValidTill(new Timestamp(System.currentTimeMillis()));
+			superUser.setEmailId(superUserMailId);	
+			superUser.setFirm(firm);
+			superUser.setLoginID("SuperUser");
+			superUser.setFirstName("Web Admin");
+			superUser.setPassword(randomPassword.toString());
+			superUser.setRole(superAdminRole);
+			firm.setAdmin(superUser);
+		} else {
+			superUser.setPassword(randomPassword.toString());
+		}
+		
+		try {
+			personService.updateOrAddPerson(superUser);
+			StringBuilder builder = new StringBuilder();
+			builder.append("Login Id : "+superUser.getLoginID());
+			builder.append("\nFirm Id : "+superUser.getFirm().getFirmId());
+			builder.append("\nPassword : "+randomPassword);
+			
+			//emailService.sendSimpleMessage(superUserMailId, "Super User Credentials", builder.toString());
+		} catch(FinanceException financeException) {
+			financeException.printStackTrace();
+		}
+	}
+
 	private void updateCompoundingFrequencyTypes() {
 		List<CompoundingFrequency> compoundingFrequencysInDatabase = (List<CompoundingFrequency>) compoundingFrequencyRepository.findAll();
 		List<CompoundingFrequency> compoundingFrequencysFromProps = commonConfiguration.getComoundingFrequencies();
@@ -203,6 +257,8 @@ public class MasterContoller {
 			if(!rolesInDatabase.contains(role)) {
 				roleRepository.save(role);
 			}
+			if(role.getName().equals("SuperUser"))
+				superAdminRole = role;
 		}
 	}
 

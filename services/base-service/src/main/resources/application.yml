@@ -45,27 +45,39 @@ collectionFrequencies:
  name: Daily
  description: daily
  faractionOfAYear: 365
+ increments: 1
+ field: 5
 -
  name: Yearly
  description: Yearly
  faractionOfAYear: 1
+ increments: 1
+ field: 1
 -
  name: Monthly
  description: Monthly
  faractionOfAYear: 12
+ increments: 1
+ field: 2
 -
  name: Weekly
  description: Weekly
  faractionOfAYear: 52
+ increments: 7
+ field: 5
 -
  name: Quarterly
  description: Quarterly
  faractionOfAYear: 4
+ increments: 3
+ field: 2
 -
  name: BiYearly
  description: BiYearly
  faractionOfAYear: 2
- 
+ increments: 6
+ field: 2
+
 loanStatus:
 -
  name: Active
@@ -73,6 +85,12 @@ loanStatus:
 -
  name: Discontinued
  description: Discontinued
+-
+ name: Created
+ description: Created
+-
+ name: Approved
+ description: Approved
 -
  name: Closed
  description: Closed
@@ -116,3 +134,5 @@ comoundingFrequencies:
  name: BiYearly
  description: BiYearly
  frequencyFactor: 2 
+ 
+ 

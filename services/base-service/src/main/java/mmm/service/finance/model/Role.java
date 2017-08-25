@@ -1,5 +1,7 @@
 package mmm.service.finance.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,9 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+
 @Entity
 @Table(name="ROLE")
-public class Role {
+public class Role implements GrantedAuthority, Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@SequenceGenerator(name = "ROlE_ID", sequenceName = "ROlE_ID")
@@ -53,6 +59,12 @@ public class Role {
 		if(this.name.equals(objRole.getName()))
 			return true;
 		return false;
+	}
+
+	@Override
+	public String getAuthority() {
+		// TODO Auto-generated method stub
+		return this.name;
 	}
 	
 }

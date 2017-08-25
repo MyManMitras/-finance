@@ -9,6 +9,7 @@ public class PersonJson {
 	private Long phoneNo;
 	private String emailId;
 	private String gender;
+	private String role;
 	private FirmJson firm;
 	
 	public PersonJson(Person person) {
@@ -17,6 +18,7 @@ public class PersonJson {
 		this.phoneNo = person.getPhoneNo();
 		this.emailId = person.getEmailId();
 		this.gender = person.getGender();
+		this.role = person.getRole().getName();
 		this.firm = new FirmJson(person.getFirm());
 	}
 
@@ -67,5 +69,13 @@ public class PersonJson {
 	public void setFirm(FirmJson firm) {
 		this.firm = firm;
 	}
-	
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+									
 }

@@ -50,6 +50,33 @@
 			<artifactId>scala-library</artifactId>
 			<version>2.10.4</version>
 		</dependency>
+		<!-- Sprin Session -->
+		<dependency>
+		    <groupId>org.springframework.session</groupId>
+		    <artifactId>spring-session</artifactId>
+		    <version>1.0.2.RELEASE</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-redis</artifactId>
+		</dependency>
+		<!-- Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
+		<!-- Emailing -->
+        <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-mail</artifactId>
+		    <version>1.4.3.RELEASE</version>
+		</dependency>
+        <dependency>
+        	<groupId>org.neo4j</groupId>
+        	<artifactId>neo4j-cypher-compiler-2.1</artifactId>
+        	<version>2.1.5</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}-${app.version}-SNAPSHOT</finalName>

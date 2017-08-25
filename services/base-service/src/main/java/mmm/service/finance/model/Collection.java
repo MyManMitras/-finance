@@ -1,11 +1,11 @@
 package mmm.service.finance.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,15 +16,17 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="COLLECTION")
-public class Collection {
-	
+public class Collection implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@SequenceGenerator(name = "COLLECTION_ID", sequenceName = "COLLECTION_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COLLECTION_ID")
 	private Long id;
 	
-	@Column(name = "PRINCIPLE")
-	private int amount;
+	@Column(name = "AMOUNT")
+	private double amount;
 	
 	@Column(name = "EXPECTED_DATE")
 	private Timestamp expectedDate;
@@ -32,15 +34,15 @@ public class Collection {
 	@Column(name = "ACTUAL_DATE")
 	private Timestamp actualDate;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "COLLECTOR_ID", insertable = true, updatable = true)
 	private Person collector;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "APPROVER_ID", insertable = true, updatable = true)
 	private Person approver;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "PAYMENT_MODE_ID", insertable = true, updatable = true)
 	private PaymentMode paymentMode;
 	
@@ -55,11 +57,11 @@ public class Collection {
 		this.id = id;
 	}
 
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 

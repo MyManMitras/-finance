@@ -11,4 +11,9 @@ public class FinanceException extends Exception{
 	public FinanceException(Exception e) {
 		super(e);
 	}
+	
+	@Override
+	public String toString() {
+		return this.getMessage();
+	}
 }

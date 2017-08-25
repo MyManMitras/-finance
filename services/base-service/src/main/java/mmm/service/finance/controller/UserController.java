@@ -67,7 +67,7 @@ public class UserController {
 		person.setFirstName("Prashanth");
 		person.setLoginID("login"+id);
 		
-		person.setPassword("abcd1234");
+		person.setPassword("123456");
 		Address address = new Address();
 		
 		Role role = roleRepository.findByName("Admin");

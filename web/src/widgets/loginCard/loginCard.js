@@ -6,9 +6,9 @@ import CardTitle from 'react-toolbox/lib/card/CardTitle';
 
 class LoginCard extends React.Component {
 
-  state = { login: '', password: '', org: ''};
+  state = { login: '', password: '', org: '' };
   handleChange = (name, value) => {
-    this.setState({...this.state, [name]: value});
+    this.setState({ ...this.state, [name]: value });
   };
 
   login = () => {
@@ -17,31 +17,47 @@ class LoginCard extends React.Component {
       login: this.state.login,
       password: this.state.password
     };
-    var data = new FormData();
-    data.append( "json", JSON.stringify( payload ) );
+    var form = new FormData();
+    form.append("password", this.state.password);
+    form.append("login", this.state.login);
 
-    fetch('/finance/v1/login',{method: 'POST',dataType: 'json', body: JSON.stringify( payload ), accept: 'application/json',headers:{'content-type': 'application/json'}})
-    .then(response=>{
-      response.json().then(data=>{
-        this.props.login(data);
+    var formBody = [];
+    for (var property in payload) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(payload[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+
+
+    fetch('/finance/v1/login', {
+      method: 'POST', dataType: 'json', body: formBody, credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+      .then(response => {
+        response.json().then(data => {
+          this.props.login(data);
+        });
+      }, error => {
+        console.log('error: ' + error);
       });
-    }, error=>{
-      console.log('error: ' + error);
-    });
   };
- 
-  render () {
+
+  render() {
     return (
-        <Card>
-            <CardTitle title="Login Here"/>
-            <section style={{padding: '14px 16px 10px'}}>
-              <Input type='text' label='Firm Id' name='orgId' maxLength={9} value={this.state.org} onChange={this.handleChange.bind(this, 'org')}/>
-              <Input type='text' label='Login Id' name='loginId' maxLength={9} value={this.state.login} onChange={this.handleChange.bind(this, 'login')}/>
-              <Input type='password' label='Password' name='loginId' maxLength={6} value={this.state.password} onChange={this.handleChange.bind(this, 'password')}/>
-              <Button label='Request Password Reset' flat primary style={{'fontSize': 'smaller'}}></Button>
-              <Button label='Login' primary raised onClick={this.login.bind(this)}></Button>
-            </section>
-        </Card>
+      <Card>
+        <CardTitle title="Login Here" />
+        <section style={{ padding: '14px 16px 10px' }}>
+          <Input type='text' label='Firm Id' name='orgId' maxLength={9} value={this.state.org} onChange={this.handleChange.bind(this, 'org')} />
+          <Input type='text' label='Login Id' name='loginId' maxLength={9} value={this.state.login} onChange={this.handleChange.bind(this, 'login')} />
+          <Input type='password' label='Password' name='loginId' maxLength={6} value={this.state.password} onChange={this.handleChange.bind(this, 'password')} />
+          <Button label='Request Password Reset' flat primary style={{ 'fontSize': 'smaller' }}></Button>
+          <Button label='Login' primary raised onClick={this.login.bind(this)}></Button>
+        </section>
+      </Card>
     );
   }
 }

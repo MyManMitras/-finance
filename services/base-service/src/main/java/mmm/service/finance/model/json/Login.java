@@ -1,4 +1,4 @@
-package mmm.service.finance.model;
+package mmm.service.finance.model.json;
 
 public class Login {
 	private String login;

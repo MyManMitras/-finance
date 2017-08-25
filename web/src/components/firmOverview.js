@@ -7,7 +7,10 @@ class FirmOverview extends React.Component {
 
   state = {overview: {}};
   componentWillMount() {
-    fetch('/finance/v1/dashboard/firmOverview/'+this.props.firmId,{accept: 'application/json'}).then(response=>{
+    fetch('/finance/v1/dashboard/firmOverview/'+this.props.firmId,{
+        accept: 'application/json',
+        credentials: "same-origin",
+        headers:{'Content-Type': 'application/json'}}).then(response=>{
       response.json().then(data=>{
         this.setState({overview: data});
       });

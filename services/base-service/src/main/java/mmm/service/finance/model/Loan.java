@@ -1,6 +1,7 @@
 package mmm.service.finance.model;
 
 import java.io.File;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -21,26 +22,28 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="LOAN")
-public class Loan {
+public class Loan implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@SequenceGenerator(name = "LOAN_ID", sequenceName = "LOAN_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LOAN_ID")
 	private Long id;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "CREATOR_ID", insertable = true, updatable = true)
 	private Person creator;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "BORROWER_ID", insertable = true, updatable = true)
 	private Person borrower;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "APPROVER_ID", insertable = true, updatable = true)
 	private Person approver;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "GURANTEER_ID", insertable = true, updatable = true)
 	private Person guranteer;
 	
@@ -56,14 +59,14 @@ public class Loan {
 	@Column(name = "RATE")
 	private float rate;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@ManyToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "COLLECTION_FREQUENCY_ID", insertable = true, updatable = true)
 	private CollectionFrequency collectionFrequency;
 	
 	@Column(name = "TENURE")
 	private int tenure;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@ManyToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "STATUS_ID", insertable = true, updatable = true)
 	private Status status;
 	

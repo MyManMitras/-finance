@@ -1,5 +1,6 @@
 package mmm.service.finance.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,7 +13,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="FIRM_TYPE")
-public class FirmType {
+public class FirmType implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@SequenceGenerator(name = "FIRM_TYPE_ID", sequenceName = "FIRM_TYPE_ID",initialValue = 1)

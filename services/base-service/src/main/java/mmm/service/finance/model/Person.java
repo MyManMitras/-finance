@@ -1,6 +1,7 @@
 package mmm.service.finance.model;
 
 import java.io.File;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.CascadeType;
@@ -13,15 +14,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 
 @Entity
 @Table(name="PERSON")
-public class Person {
-	
+public class Person implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@SequenceGenerator(name = "PERSON_ID", sequenceName = "PERSON_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERSON_ID")
@@ -60,15 +63,15 @@ public class Person {
 	@Column(name = "IDENTITY_PROOF")
 	private File identityProof;
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "FIRM_ID", insertable = true, updatable = true)
 	private Firm firm;	
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "ROLE_ID", insertable = true, updatable = true)
 	private Role role;	
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@OneToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "ADDRESS_ID", insertable = true, updatable = true)
 	private Address address;
 
@@ -93,7 +96,8 @@ public class Person {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		MessageDigestPasswordEncoder encoder = new MessageDigestPasswordEncoder("SHA-1");
+		this.password = encoder.encodePassword(password, null);
 	}
 
 	public String getFirstName() {

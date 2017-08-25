@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import mmm.service.finance.model.Login;
 import mmm.service.finance.model.Person;
+import mmm.service.finance.model.json.Login;
 import mmm.service.finance.repository.PersonRepository;
 
 @Component
