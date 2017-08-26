@@ -51,15 +51,25 @@
 			<version>2.10.4</version>
 		</dependency>
 		<!-- Sprin Session -->
+	
 		<dependency>
 		    <groupId>org.springframework.session</groupId>
 		    <artifactId>spring-session</artifactId>
-		    <version>1.0.2.RELEASE</version>
-		</dependency>
+		    <version>1.3.1.RELEASE</version>
+		</dependency><!-- 
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-redis</artifactId>
-		</dependency>
+		</dependency>  -->
+		<dependency>
+                <groupId>org.springframework.session</groupId>
+                <artifactId>spring-session-jdbc</artifactId>
+                <version>1.3.1.RELEASE</version>
+        </dependency>
+        <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
 		<!-- Security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

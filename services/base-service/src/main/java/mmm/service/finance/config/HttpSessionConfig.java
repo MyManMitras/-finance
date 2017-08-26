@@ -1,7 +1,7 @@
 package mmm.service.finance.config;
 
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
-@EnableRedisHttpSession
+@EnableJdbcHttpSession
 public class HttpSessionConfig {
 }
