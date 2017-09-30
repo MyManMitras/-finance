@@ -103,4 +103,16 @@ public class PersonService {
 		
 		return adminNames;
 	}
+
+	public List<PersonCreationJson> getLoanablePersons() {
+		Person currentPerson = getCurrentPerson();
+		
+		List<Person> persons = personRepository.findAllByFirmFirmId(currentPerson.getFirm().getFirmId());
+		List<PersonCreationJson> personsCreationJson= new ArrayList<>();
+		persons.parallelStream().forEach(person -> {
+			personsCreationJson.add(new PersonCreationJson(person));
+		});
+		
+		return personsCreationJson;
+	}
 }

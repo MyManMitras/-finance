@@ -13,8 +13,10 @@ import org.springframework.stereotype.Component;
 import mmm.service.finance.model.Loan;
 import mmm.service.finance.model.Collection;
 import mmm.service.finance.model.json.LoanCreationJson;
+import mmm.service.finance.model.json.PersonCreationJson;
 import mmm.service.finance.repository.CollectionRepository;
 import mmm.service.finance.repository.LoanRepository;
+import mmm.service.finance.repository.PersonRepository;
 
 @Component
 public class LoanService {
@@ -100,5 +102,9 @@ public class LoanService {
 		gregorianCalendar.setTime(new Date(previousCollectionDate.getTime()));
 		gregorianCalendar.add(loan.getCollectionFrequency().getField(), loan.getCollectionFrequency().getIncrements());
 		return new Timestamp(gregorianCalendar.getTimeInMillis());
+	}
+
+	public List<PersonCreationJson> getLoanablePersons() {
+		return personService.getLoanablePersons();
 	}
 }

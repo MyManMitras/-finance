@@ -11,4 +11,5 @@ public interface PersonRepository extends CrudRepository<Person, Serializable>{
 	
 	Person findByLoginID(String loginId);
 	List<Person> findAllByRoleNameAndFirmIsNull(String roleName);
+	List<Person> findAllByFirmFirmId(String firmId);
 }
